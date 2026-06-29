@@ -1,269 +1,151 @@
+<!doctype html>
 <html lang="de">
-
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" user-scalable="no">
-    <meta http-equiv="“cache-control“" content="“no-cache" no-store="" must-revalidate“="">
-    <meta http-equiv="“pragma“" content="“no-cache“">
-    <meta http-equiv="“expires“" content="“0″">
-
-
-    <title>Zerfallende Würfel</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <style>
-        button {
-            background-color: #4CAF50;
-            /* Green */
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            margin: auto;
-            cursor: pointer;
-        }
-        
-        button:hover {
-            background-color: #3e8e41;
-        }
-        
-        button.save {
-            background-color: #008CBA;
-            /* Blue */
-        }
-        /* Fadenkreuz */
-        
-        .crosshair {
-            pointer-events: none;
-            /* Verhindert, dass das Fadenkreuz das Maus-Event stört */
-        }
-        
-        .crosshair line {
-            stroke: #333;
-            /* Farbe des Fadenkreuzes */
-            stroke-width: 1px;
-            /* Breite des Fadenkreuzes */
-            stroke-dasharray: 3, 3;
-            /* Gestrichelte Linie */
-        }
-        /* Tooltip */
-        
-        .tooltip {
-            font-family: sans-serif;
-            font-size: 12px;
-            pointer-events: none;
-            /* Verhindert, dass das Tooltip-Textfeld das Maus-Event stört */
-        }
-        
-        .tooltip text {
-            fill: #333;
-            /* Textfarbe */
-            font-weight: bold;
-        }
-        
-        .grid {
-            margin: auto;
-            align-items: center;
-            position: relative;
-        }
-        
-        .dice {
-            width: 5px;
-            height: 5px;
-            position: absolute;
-            font-size: 8px;
-            top: 100px;
-            left: 100px;
-            text-align: center;
-            vertical-align: center;
-            background: #dd0;
-            border: solid;
-            border-width: 1px;
-            border-radius: 2px;
-        }
-        
-        .red {
-            background-color: red;
-        }
-        
-        .chart {
-            background: url("Hintergrund_Diagramm.png");
-            background-repeat: no-repeat;
-            background-size: cover;
-            width: 75%;
-            height: 200px;
-            border: 1px solid black;
-            margin-top: 5px;
-            margin-left: 10px;
-            padding: 20px;
-            margin-button: 20px;
-        }
-        
-        .lable {
-            width: 500px;
-            margin-top: 20px;
-            margin-left: 10px;
-        }
-        
-        .Messtabelle {
-            margin-left: 2vw;
-            border-collapse: collapse;
-        }
-        
-        table {
-            border: 1px solid;
-            overflow: scroll;
-        }
-        
-        td,
-        th {
-            border: 1px solid;
-        }
-        
-        td {
-            width: 30px;
-            padding: 5px;
-            text-align: center;
-            font-size: smaller;
-            white-space: nowrap;
-        }
-        
-        .chartcontainer {
-            /* display: -webkit-flex;
-            display: flex;*/
-            /*align-items: center;
-            justify-content: center;*/
-            width: 100%;
-            margin: auto;
-            margin-top: 20px;
-            background: #eee;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .bar1 {
-            width: 3px;
-            margin-right: 1px;
-            display: inline-block;
-            background-color: blue;
-        }
-        
-        .bar2 {
-            width: 3px;
-            margin-right: 1px;
-            display: inline-block;
-            background-color: red;
-        }
-        
-        .counter {
-            width: 100%;
-            text-align: center;
-            font-weight: bold;
-            margin: auto;
-            margin-bottom: 5px;
-            padding: 5px;
-        }
-        
-        .six {
-            background: #f00;
-            background-repeat: no-repeat;
-            background-size: auto;
-        }
-        /* Media query for responsive button */
-        
-        @media only screen and (max-width: 1200px) {
-            button {
-                width: 100%;
-            }
-            .start{
-              display  : bloxk;
-        }
-        
-        #popup {
-            display: none;
-            background-color: #eee;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        
-        #popup-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            height: 80%;
-            background-color: #fff;
-            overflow: auto;
-            padding: 20px;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>Zerfall von Cubetonium | Kernzerfall & Halbwertzeit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://d3js.org/d3.v7.min.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
-
 <body>
+  <header class="hero">
+    <nav class="topbar" aria-label="Seitennavigation">
+      <a href="#simulation">Simulation</a>
+      <a href="#diagramm">Diagramm</a>
+      <a href="#aufgaben">Aufgaben</a>
+    </nav>
+    <div class="hero__content">
+      <p class="eyebrow">Interaktive Physik-Simulation</p>
+      <h1>Zerfall von Cubetonium</h1>
+      <p class="hero__text">Würfle Atomkerne, beobachte zufälligen Kernzerfall und untersuche, wie aus vielen Einzelereignissen ein Halbwertszeit-Gesetz entsteht.</p>
+      <div class="hero__actions">
+        <a class="button button--primary" href="#simulation">Simulation starten</a>
+        <a class="button button--ghost" href="#aufgaben">Aufgaben ansehen</a>
+      </div>
+    </div>
+  </header>
 
-    <h2>Zerfall von Cubetonium</h2>
-    <div style="align: Center; width: 100%;">
-        <button onclick="start()" id="Start" style="display:none;margin-left: 0px;">Zeitsprung</button>
-        <button onclick="restart()" id="Restart" style="margin-left: 0px;">Restart</button>
-        <button onclick="saveChart()" class="save">Diagramm anzeigen</button> Atomanzahl:
-        <select name="N-Würfel" id="myRange">
+  <main>
+    <section class="panel intro" aria-labelledby="intro-title">
+      <div>
+        <p class="eyebrow">Modellidee</p>
+        <h2 id="intro-title">Ein Würfel als radioaktiver Atomkern</h2>
+        <p>Jeder Cubetonium-Kern wird in einem Zeitschritt einmal „gewürfelt“. Fällt die Zerfallszahl, verschwindet der Kern aus der Probe. Bei einer Zerfallswahrscheinlichkeit von <strong>1/6 pro Zeitschritt</strong> bleibt im Mittel nach etwa <strong>3,8 Zeitschritten</strong> nur noch die Hälfte übrig.</p>
+      </div>
+      <div class="formula-card" aria-label="Formelkarte">
+        <span>N(t) = N₀ · (1 − p)<sup>t</sup></span>
+        <small>p = Zerfallswahrscheinlichkeit pro Zeitschritt</small>
+      </div>
+    </section>
+
+    <section class="dashboard" id="simulation">
+      <article class="panel controls" aria-labelledby="controls-title">
+        <div class="section-heading">
+          <p class="eyebrow">Experiment</p>
+          <h2 id="controls-title">Parameter einstellen</h2>
+        </div>
+
+        <label class="field" for="myRange">
+          <span>Atomanzahl</span>
+          <select name="N-Würfel" id="myRange">
             <option value="50">50</option>
-            <option value="10000">10000</option>
-            <option value="25000">25000</option>
-            <option value="50000">50000</option>
+            <option value="500">500</option>
+            <option value="10000">10&nbsp;000</option>
+            <option value="25000">25&nbsp;000</option>
+            <option value="50000">50&nbsp;000</option>
           </select>
-    </div>
-    <div class="chartcontainer">
-        <div class="slidecontainer">
-            Atomanzahl: <span id="demo">50</span>
+        </label>
+
+        <label class="field" for="decaySides">
+          <span>Zerfallszahl</span>
+          <select id="decaySides" aria-describedby="decay-help">
+            <option value="6">nur 6 (p = 1/6)</option>
+            <option value="4">4, 5 oder 6 (p = 1/2)</option>
+            <option value="10">nur 10 (p = 1/10)</option>
+          </select>
+          <small id="decay-help">Je kleiner p ist, desto länger ist die Halbwertszeit.</small>
+        </label>
+
+        <div class="button-row">
+          <button class="button button--primary" type="button" id="Start">Zeitschritt würfeln</button>
+          <button class="button button--secondary" type="button" id="autoRun">Auto-Lauf</button>
+          <button class="button button--danger" type="button" id="Restart">Neu starten</button>
+          <button class="button button--ghost" type="button" id="toggleChart">Diagramm ein-/ausblenden</button>
         </div>
-        <div style="overflow-x: scroll;">
-            <table class="Messtabelle">
-                <tbody>
-                    <tr id="wurf" class="lable">
-                        <td>Zeit</td>
-                    </tr>
-                    <tr id="messwert" class="lable">
-                        <td>zerfallene" Isotope</td>
-                    </tr>
-                </tbody>
-            </table>
+
+        <div class="hint">
+          <strong>Tipp:</strong> Mit der Taste <kbd>W</kbd> würfelst du einen weiteren Zeitschritt.
         </div>
-    </div>
+      </article>
 
-    <div id="counter" class="counter">Verbliebende Cubetonium-Atome:</div>
-    <div id="DownloadContainer" style="display:none;">
-        <svg id="v4"></svg>
-    </div>
-
-
-    <!--
-    <div class="chartcontainer" id="chart">
-        <div class="chart" id="chart1">
+      <article class="panel stats" aria-label="Messwerte">
+        <div class="stat-card">
+          <span>Startwert N₀</span>
+          <strong id="demo">50</strong>
         </div>
-    </div>
-    -->
+        <div class="stat-card">
+          <span>Verbleibende Kerne</span>
+          <strong id="remainingCount">50</strong>
+        </div>
+        <div class="stat-card">
+          <span>Zeit</span>
+          <strong><span id="roundCount">0</span> s</strong>
+        </div>
+        <div class="stat-card">
+          <span>experimentelle Halbwertszeit</span>
+          <strong id="halfLifeDisplay">–</strong>
+        </div>
+      </article>
+    </section>
 
+    <section class="panel visual-panel" aria-labelledby="visual-title">
+      <div class="section-heading">
+        <p class="eyebrow">Probe</p>
+        <h2 id="visual-title">Cubetonium-Kerne</h2>
+        <p id="counter">Verbleibende Cubetonium-Atome: 50</p>
+      </div>
+      <div class="grid" id="grid" aria-live="polite"></div>
+    </section>
 
-    <div class="grid" id="grid">
-        <div class="dice" id="die0" style="width: 164px; height: 164px; border-radius: 82px; top: 0px; left: 163.333px;">2</div>
-        <div class="dice" id="die2" style="width: 164px; height: 164px; border-radius: 82px; top: 0px; left: 491.333px;">2</div>
-    </div>
+    <section class="panel chart-panel" id="diagramm" aria-labelledby="chart-title">
+      <div class="section-heading">
+        <p class="eyebrow">Auswertung</p>
+        <h2 id="chart-title">Messdiagramm</h2>
+        <p>Die blaue Kurve zeigt die verbliebenen Kerne N(t), die rote Kurve die Zerfälle pro Zeitschritt ΔN.</p>
+      </div>
+      <div id="DownloadContainer" class="chart-wrapper">
+        <svg id="v4" role="img" aria-label="Diagramm des Kernzerfalls"></svg>
+      </div>
+      <div class="table-wrap" aria-label="Messwerttabelle">
+        <table class="Messtabelle">
+          <tbody>
+            <tr id="wurf" class="lable"><th>Zeit</th></tr>
+            <tr id="messwert"><th>zerfallene Kerne ΔN</th></tr>
+            <tr id="restwert"><th>verbleibende Kerne N</th></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-    <!--<div id="popup">
-        <div id="popup-content" onclick="ausblenden()"></div>
-    </div>
-    -->
-    <script src="script.js"></script>
-
+    <section class="tasks" id="aufgaben" aria-labelledby="tasks-title">
+      <div class="section-heading section-heading--center">
+        <p class="eyebrow">Aufgaben</p>
+        <h2 id="tasks-title">Kernzerfall und Halbwertszeit üben</h2>
+      </div>
+      <div class="task-grid">
+        <article class="task-card"><span>1</span><h3>Messreihe aufnehmen</h3><p>Starte mit 500 Kernen und führe mindestens 12 Zeitschritte aus. Notiere, nach welcher Zeit ungefähr nur noch die Hälfte vorhanden ist.</p></article>
+        <article class="task-card"><span>2</span><h3>Zufall vergleichen</h3><p>Wiederhole das Experiment dreimal mit 50 Kernen und danach dreimal mit 10&nbsp;000 Kernen. Erkläre, warum große Proben glattere Kurven liefern.</p></article>
+        <article class="task-card"><span>3</span><h3>Halbwertszeit berechnen</h3><p>Nutze N(t)=N₀·(5/6)<sup>t</sup>. Berechne für N₀=10&nbsp;000, wie viele Kerne nach 4, 8 und 12 Sekunden im Mittel übrig sind.</p></article>
+        <article class="task-card"><span>4</span><h3>Aktivität deuten</h3><p>Vergleiche ΔN am Anfang und am Ende. Warum nimmt die Aktivität ab, obwohl die Zerfallswahrscheinlichkeit jedes einzelnen Kerns gleich bleibt?</p></article>
+        <article class="task-card"><span>5</span><h3>Parameter untersuchen</h3><p>Ändere die Zerfallszahl auf p=1/2 und p=1/10. Formuliere eine Regel: Was passiert mit der Halbwertszeit, wenn p größer oder kleiner wird?</p></article>
+        <article class="task-card"><span>6</span><h3>Transfer</h3><p>Ein Isotop hat eine Halbwertszeit von 8 Tagen. Wie viel Prozent einer Probe sind nach 8, 16, 24 und 32 Tagen noch vorhanden?</p></article>
+      </div>
+    </section>
+  </main>
 </body>
-<div style="background: rgba(50, 131, 168, 0.5); position: absolute; z-index: 2147483647;"></div>
-
 </html>
