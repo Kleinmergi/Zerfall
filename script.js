@@ -24,11 +24,6 @@ const state = {
   halfLifeRound: null,
 };
 
-function decayProbability() {
-  if (state.decayMode === 4) return 0.5;
-  if (state.decayMode === 10) return 0.1;
-  return 1 / 6;
-}
 
 function renderedAtomCount() {
   return Math.min(state.atoms, state.maxRenderedAtoms);
@@ -46,8 +41,8 @@ function createCell(value) {
 
 function resetTable() {
   timeRow.innerHTML = "<th>Zeit</th>";
-  decayRow.innerHTML = "<th>zerfallene Kerne ΔN</th>";
-  remainingRow.innerHTML = "<th>verbleibende Kerne N</th>";
+  decayRow.innerHTML = "<th>ΔN</th>";
+  remainingRow.innerHTML = "<th>N</th>";
 }
 
 function updateStats() {
@@ -170,7 +165,7 @@ function plotChart() {
 
   const bounds = chartContainer.getBoundingClientRect();
   const width = Math.max(680, bounds.width || 900);
-  const height = 360;
+  const height = 300;
   const margin = { top: 24, right: 28, bottom: 48, left: 72 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
@@ -220,15 +215,9 @@ function plotChart() {
     .attr("stroke", "#ef4444");
 }
 
-function toggleChart() {
-  state.chartVisible = !state.chartVisible;
-  chartContainer.hidden = !state.chartVisible;
-}
-
 document.getElementById("Start").addEventListener("click", rollAllDice);
 document.getElementById("Restart").addEventListener("click", resetSimulation);
 document.getElementById("autoRun").addEventListener("click", toggleAutoRun);
-document.getElementById("toggleChart").addEventListener("click", toggleChart);
 atomSelect.addEventListener("change", resetSimulation);
 decaySelect.addEventListener("change", resetSimulation);
 document.addEventListener("keydown", (event) => {

@@ -3,148 +3,95 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111827">
-  <title>Zerfall von Cubetonium | Kernzerfall & Halbwertzeit</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <title>Zerfall von Cubetonium</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://d3js.org/d3.v7.min.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
-  <header class="hero">
-    <nav class="topbar" aria-label="Seitennavigation">
-      <a href="#simulation">Simulation</a>
-      <a href="#diagramm">Diagramm</a>
-      <a href="#aufgaben">Aufgaben</a>
-    </nav>
-    <div class="hero__content">
-      <p class="eyebrow">Interaktive Physik-Simulation</p>
-      <h1>Zerfall von Cubetonium</h1>
-      <p class="hero__text">Würfle Atomkerne, beobachte zufälligen Kernzerfall und untersuche, wie aus vielen Einzelereignissen ein Halbwertszeit-Gesetz entsteht.</p>
-      <div class="hero__actions">
-        <a class="button button--primary" href="#simulation">Simulation starten</a>
-        <a class="button button--ghost" href="#aufgaben">Aufgaben ansehen</a>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="panel intro" aria-labelledby="intro-title">
+  <main class="page">
+    <header class="page-header">
       <div>
-        <p class="eyebrow">Modellidee</p>
-        <h2 id="intro-title">Ein Würfel als radioaktiver Atomkern</h2>
-        <p>Jeder Cubetonium-Kern wird in einem Zeitschritt einmal „gewürfelt“. Fällt die Zerfallszahl, verschwindet der Kern aus der Probe. Bei einer Zerfallswahrscheinlichkeit von <strong>1/6 pro Zeitschritt</strong> bleibt im Mittel nach etwa <strong>3,8 Zeitschritten</strong> nur noch die Hälfte übrig.</p>
+        <p class="label">Kernzerfall & Halbwertzeit</p>
+        <h1>Zerfall von Cubetonium</h1>
+        <p class="lead">Ein Würfelmodell: Bei jedem Zeitschritt zerfallen alle Kerne, die eine bestimmte Zahl würfeln.</p>
       </div>
-      <div class="formula-card" aria-label="Formelkarte">
-        <span>N(t) = N₀ · (1 − p)<sup>t</sup></span>
-        <small>p = Zerfallswahrscheinlichkeit pro Zeitschritt</small>
-      </div>
-    </section>
+      <img src="Kern.png" alt="Symbolbild eines Atomkerns" class="header-image">
+    </header>
 
-    <section class="dashboard" id="simulation">
-      <article class="panel controls" aria-labelledby="controls-title">
-        <div class="section-heading">
-          <p class="eyebrow">Experiment</p>
-          <h2 id="controls-title">Parameter einstellen</h2>
-        </div>
-
-        <label class="field" for="myRange">
-          <span>Atomanzahl</span>
+    <section class="card" aria-labelledby="setup-title">
+      <h2 id="setup-title">Simulation</h2>
+      <div class="controls">
+        <label>
+          Atomanzahl
           <select name="N-Würfel" id="myRange">
             <option value="50">50</option>
             <option value="500">500</option>
-            <option value="10000">10&nbsp;000</option>
-            <option value="25000">25&nbsp;000</option>
-            <option value="50000">50&nbsp;000</option>
+            <option value="10000">10 000</option>
+            <option value="25000">25 000</option>
+            <option value="50000">50 000</option>
           </select>
         </label>
-
-        <label class="field" for="decaySides">
-          <span>Zerfallszahl</span>
-          <select id="decaySides" aria-describedby="decay-help">
-            <option value="6">nur 6 (p = 1/6)</option>
-            <option value="4">4, 5 oder 6 (p = 1/2)</option>
-            <option value="10">nur 10 (p = 1/10)</option>
+        <label>
+          Zerfallswahrscheinlichkeit
+          <select id="decaySides">
+            <option value="6">1/6 pro Zeitschritt</option>
+            <option value="4">1/2 pro Zeitschritt</option>
+            <option value="10">1/10 pro Zeitschritt</option>
           </select>
-          <small id="decay-help">Je kleiner p ist, desto länger ist die Halbwertszeit.</small>
         </label>
+        <div class="actions">
+          <button type="button" id="Start">Zeitschritt</button>
+          <button type="button" id="autoRun">Auto</button>
+          <button type="button" id="Restart" class="secondary">Reset</button>
+        </div>
+      </div>
 
-        <div class="button-row">
-          <button class="button button--primary" type="button" id="Start">Zeitschritt würfeln</button>
-          <button class="button button--secondary" type="button" id="autoRun">Auto-Lauf</button>
-          <button class="button button--danger" type="button" id="Restart">Neu starten</button>
-          <button class="button button--ghost" type="button" id="toggleChart">Diagramm ein-/ausblenden</button>
-        </div>
+      <div class="stats" aria-label="Messwerte">
+        <p><span>Start</span><strong id="demo">50</strong></p>
+        <p><span>Verbleibend</span><strong id="remainingCount">50</strong></p>
+        <p><span>Zeit</span><strong><span id="roundCount">0</span> s</strong></p>
+        <p><span>Halbwertszeit</span><strong id="halfLifeDisplay">–</strong></p>
+      </div>
 
-        <div class="hint">
-          <strong>Tipp:</strong> Mit der Taste <kbd>W</kbd> würfelst du einen weiteren Zeitschritt.
-        </div>
-      </article>
-
-      <article class="panel stats" aria-label="Messwerte">
-        <div class="stat-card">
-          <span>Startwert N₀</span>
-          <strong id="demo">50</strong>
-        </div>
-        <div class="stat-card">
-          <span>Verbleibende Kerne</span>
-          <strong id="remainingCount">50</strong>
-        </div>
-        <div class="stat-card">
-          <span>Zeit</span>
-          <strong><span id="roundCount">0</span> s</strong>
-        </div>
-        <div class="stat-card">
-          <span>experimentelle Halbwertszeit</span>
-          <strong id="halfLifeDisplay">–</strong>
-        </div>
-      </article>
+      <p class="hint">Tastatur: Mit <kbd>W</kbd> wird ein weiterer Zeitschritt ausgelöst.</p>
     </section>
 
-    <section class="panel visual-panel" aria-labelledby="visual-title">
-      <div class="section-heading">
-        <p class="eyebrow">Probe</p>
-        <h2 id="visual-title">Cubetonium-Kerne</h2>
+    <section class="card" aria-labelledby="atoms-title">
+      <div class="section-title">
+        <h2 id="atoms-title">Atomkerne</h2>
         <p id="counter">Verbleibende Cubetonium-Atome: 50</p>
       </div>
       <div class="grid" id="grid" aria-live="polite"></div>
     </section>
 
-    <section class="panel chart-panel" id="diagramm" aria-labelledby="chart-title">
-      <div class="section-heading">
-        <p class="eyebrow">Auswertung</p>
-        <h2 id="chart-title">Messdiagramm</h2>
-        <p>Die blaue Kurve zeigt die verbliebenen Kerne N(t), die rote Kurve die Zerfälle pro Zeitschritt ΔN.</p>
+    <section class="card" id="diagramm" aria-labelledby="chart-title">
+      <div class="section-title">
+        <h2 id="chart-title">Auswertung</h2>
+        <p>Blau: N(t), Rot: Zerfälle pro Zeitschritt ΔN</p>
       </div>
       <div id="DownloadContainer" class="chart-wrapper">
-        <svg id="v4" role="img" aria-label="Diagramm des Kernzerfalls"></svg>
+        <svg id="v4" role="img" aria-label="Diagramm zum Kernzerfall"></svg>
       </div>
-      <div class="table-wrap" aria-label="Messwerttabelle">
+      <div class="table-wrap">
         <table class="Messtabelle">
           <tbody>
-            <tr id="wurf" class="lable"><th>Zeit</th></tr>
-            <tr id="messwert"><th>zerfallene Kerne ΔN</th></tr>
-            <tr id="restwert"><th>verbleibende Kerne N</th></tr>
+            <tr id="wurf"><th>Zeit</th></tr>
+            <tr id="messwert"><th>ΔN</th></tr>
+            <tr id="restwert"><th>N</th></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <section class="tasks" id="aufgaben" aria-labelledby="tasks-title">
-      <div class="section-heading section-heading--center">
-        <p class="eyebrow">Aufgaben</p>
-        <h2 id="tasks-title">Kernzerfall und Halbwertszeit üben</h2>
-      </div>
-      <div class="task-grid">
-        <article class="task-card"><span>1</span><h3>Messreihe aufnehmen</h3><p>Starte mit 500 Kernen und führe mindestens 12 Zeitschritte aus. Notiere, nach welcher Zeit ungefähr nur noch die Hälfte vorhanden ist.</p></article>
-        <article class="task-card"><span>2</span><h3>Zufall vergleichen</h3><p>Wiederhole das Experiment dreimal mit 50 Kernen und danach dreimal mit 10&nbsp;000 Kernen. Erkläre, warum große Proben glattere Kurven liefern.</p></article>
-        <article class="task-card"><span>3</span><h3>Halbwertszeit berechnen</h3><p>Nutze N(t)=N₀·(5/6)<sup>t</sup>. Berechne für N₀=10&nbsp;000, wie viele Kerne nach 4, 8 und 12 Sekunden im Mittel übrig sind.</p></article>
-        <article class="task-card"><span>4</span><h3>Aktivität deuten</h3><p>Vergleiche ΔN am Anfang und am Ende. Warum nimmt die Aktivität ab, obwohl die Zerfallswahrscheinlichkeit jedes einzelnen Kerns gleich bleibt?</p></article>
-        <article class="task-card"><span>5</span><h3>Parameter untersuchen</h3><p>Ändere die Zerfallszahl auf p=1/2 und p=1/10. Formuliere eine Regel: Was passiert mit der Halbwertszeit, wenn p größer oder kleiner wird?</p></article>
-        <article class="task-card"><span>6</span><h3>Transfer</h3><p>Ein Isotop hat eine Halbwertszeit von 8 Tagen. Wie viel Prozent einer Probe sind nach 8, 16, 24 und 32 Tagen noch vorhanden?</p></article>
-      </div>
+    <section class="card tasks" id="aufgaben" aria-labelledby="tasks-title">
+      <h2 id="tasks-title">Aufgaben</h2>
+      <ol>
+        <li>Starte mit 500 Kernen. Bestimme aus der Simulation ungefähr die Halbwertszeit.</li>
+        <li>Vergleiche 50 und 10 000 Kerne. Welche Messreihe schwankt stärker? Begründe.</li>
+        <li>Berechne mit N(t)=N₀·(5/6)<sup>t</sup>, wie viele von 10 000 Kernen nach 4, 8 und 12 s übrig sind.</li>
+        <li>Erkläre, warum die Anzahl der Zerfälle pro Zeitschritt mit der Zeit kleiner wird.</li>
+      </ol>
     </section>
   </main>
 </body>
