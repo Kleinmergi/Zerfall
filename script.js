@@ -10,6 +10,9 @@ const timeRow = document.getElementById("wurf");
 const decayRow = document.getElementById("messwert");
 const remainingRow = document.getElementById("restwert");
 const chartContainer = document.getElementById("DownloadContainer");
+const formulaCurrent = document.getElementById("formulaCurrent");
+const expectedRemaining = document.getElementById("expectedRemaining");
+const theoryHalfLife = document.getElementById("theoryHalfLife");
 
 const state = {
   atoms: Number(atomSelect.value),
@@ -46,11 +49,19 @@ function resetTable() {
 }
 
 function updateStats() {
+  const survivalProbability = state.decayMode === 4 ? 0.5 : (state.decayMode - 1) / state.decayMode;
+  const survivalFraction = state.decayMode === 4 ? "1/2" : `${formatNumber(state.decayMode - 1)}/${formatNumber(state.decayMode)}`;
+  const expected = Math.round(state.atoms * survivalProbability ** state.round);
+  const halfLife = Math.log(0.5) / Math.log(survivalProbability);
+
   output.textContent = formatNumber(state.atoms);
   remainingCount.textContent = formatNumber(state.remaining);
   roundCount.textContent = state.round;
   counter.textContent = `Verbleibende Cubetonium-Atome: ${formatNumber(state.remaining)}`;
   halfLifeDisplay.textContent = state.halfLifeRound ? `${state.halfLifeRound} s` : "–";
+  formulaCurrent.textContent = `N(t)=${formatNumber(state.atoms)}·(${survivalFraction})^t`;
+  expectedRemaining.textContent = formatNumber(expected);
+  theoryHalfLife.textContent = `${halfLife.toLocaleString("de-DE", { maximumFractionDigits: 1 })} s`;
 }
 
 function initGrid() {

@@ -10,14 +10,31 @@
 </head>
 <body>
   <main class="page">
-    <header class="page-header">
+    <header class="page-header worksheet-head">
       <div>
         <p class="label">Kernzerfall & Halbwertzeit</p>
         <h1>Zerfall von Cubetonium</h1>
-        <p class="lead">Ein Würfelmodell: Bei jedem Zeitschritt zerfallen alle Kerne, die eine bestimmte Zahl würfeln.</p>
+        <p class="lead">Ein digitales Würfelexperiment wie auf dem Arbeitsblatt: Jeder Würfel steht für einen Atomkern, ein Treffer bedeutet Zerfall.</p>
       </div>
       <img src="Kern.png" alt="Symbolbild eines Atomkerns" class="header-image">
     </header>
+
+    <section class="card intro-card" aria-labelledby="auftrag-title">
+      <div>
+        <p class="label">Vorbereitung</p>
+        <h2 id="auftrag-title">Arbeitsauftrag</h2>
+        <ol class="checklist">
+          <li>Wähle die Anzahl der Cubetonium-Kerne und starte mit einem einzelnen Zeitschritt.</li>
+          <li>Notiere nach jedem Schritt die Zeit <strong>t</strong>, die Zerfälle <strong>ΔN</strong> und die Restmenge <strong>N</strong>.</li>
+          <li>Markiere den Zeitpunkt, an dem ungefähr die Hälfte der Anfangskerne übrig ist.</li>
+          <li>Vergleiche Messwerte, Diagramm und Modellrechnung miteinander.</li>
+        </ol>
+      </div>
+      <aside class="info-box" aria-label="Modellannahme">
+        <strong>Modell</strong>
+        <p>Bei p = 1/6 gilt näherungsweise: <br><span>N(t) = N₀ · (5/6)<sup>t</sup></span></p>
+      </aside>
+    </section>
 
     <section class="card" aria-labelledby="setup-title">
       <h2 id="setup-title">Simulation</h2>
@@ -54,7 +71,30 @@
         <p><span>Halbwertszeit</span><strong id="halfLifeDisplay">–</strong></p>
       </div>
 
-      <p class="hint">Tastatur: Mit <kbd>W</kbd> wird ein weiterer Zeitschritt ausgelöst.</p>
+      <div class="model-panel" aria-label="Modellrechnung">
+        <p><span>Aktuelle Modellformel</span><strong id="formulaCurrent">N(t)=50·(5/6)^t</strong></p>
+        <p><span>Erwartungswert jetzt</span><strong id="expectedRemaining">50</strong></p>
+        <p><span>Theoretische Halbwertszeit</span><strong id="theoryHalfLife">3,8 s</strong></p>
+      </div>
+      <p class="hint">Tastatur: Mit <kbd>W</kbd> wird ein weiterer Zeitschritt ausgelöst. Der Auto-Lauf ist praktisch für lange Messreihen.</p>
+    </section>
+
+    <section class="card method-card" aria-labelledby="method-title">
+      <h2 id="method-title">Durchführung und Beobachtung</h2>
+      <div class="method-grid">
+        <div>
+          <h3>1. Messreihe aufnehmen</h3>
+          <p>Führe mindestens zehn Zeitschritte aus. Bei kleinen Startzahlen ist die Messreihe absichtlich unruhig.</p>
+        </div>
+        <div>
+          <h3>2. Halbwertszeit ablesen</h3>
+          <p>Suche in Tabelle oder Diagramm den ersten Wert, bei dem N ≤ N₀/2 ist.</p>
+        </div>
+        <div>
+          <h3>3. Deuten</h3>
+          <p>Erkläre den Unterschied zwischen Zufall beim einzelnen Kern und Vorhersagbarkeit bei vielen Kernen.</p>
+        </div>
+      </div>
     </section>
 
     <section class="card" aria-labelledby="atoms-title">
@@ -85,13 +125,30 @@
     </section>
 
     <section class="card tasks" id="aufgaben" aria-labelledby="tasks-title">
-      <h2 id="tasks-title">Aufgaben</h2>
-      <ol>
-        <li>Starte mit 500 Kernen. Bestimme aus der Simulation ungefähr die Halbwertszeit.</li>
-        <li>Vergleiche 50 und 10 000 Kerne. Welche Messreihe schwankt stärker? Begründe.</li>
-        <li>Berechne mit N(t)=N₀·(5/6)<sup>t</sup>, wie viele von 10 000 Kernen nach 4, 8 und 12 s übrig sind.</li>
-        <li>Erkläre, warum die Anzahl der Zerfälle pro Zeitschritt mit der Zeit kleiner wird.</li>
-      </ol>
+      <h2 id="tasks-title">Auswertung und Aufgaben</h2>
+      <div class="task-grid">
+        <article>
+          <h3>A Messwerte</h3>
+          <ol>
+            <li>Starte mit 500 Kernen und bestimme aus Tabelle und Diagramm die Halbwertszeit.</li>
+            <li>Wiederhole die Messung mit 50 und 10 000 Kernen. Beschreibe die Unterschiede.</li>
+          </ol>
+        </article>
+        <article>
+          <h3>B Rechnung</h3>
+          <ol>
+            <li>Berechne mit N(t)=N₀·(5/6)<sup>t</sup>, wie viele von 10 000 Kernen nach 4, 8 und 12 s übrig sind.</li>
+            <li>Vergleiche deine berechneten Werte mit der Simulation. Notiere mögliche Abweichungen.</li>
+          </ol>
+        </article>
+        <article>
+          <h3>C Erklärung</h3>
+          <ol>
+            <li>Erkläre, warum ΔN mit der Zeit kleiner wird.</li>
+            <li>Formuliere eine kurze Definition der Halbwertszeit in eigenen Worten.</li>
+          </ol>
+        </article>
+      </div>
     </section>
   </main>
 </body>
