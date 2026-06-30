@@ -175,9 +175,9 @@ function plotChart() {
   svg.selectAll("*").remove();
 
   const bounds = chartContainer.getBoundingClientRect();
-  const width = Math.max(680, bounds.width || 900);
-  const height = 300;
-  const margin = { top: 24, right: 28, bottom: 48, left: 72 };
+  const width = Math.max(360, bounds.width || 680);
+  const height = Math.max(150, bounds.height || 220);
+  const margin = { top: 18, right: 24, bottom: 34, left: 60 };
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 

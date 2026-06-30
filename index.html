@@ -9,147 +9,97 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-  <main class="page">
+  <main class="page compact-page">
     <header class="page-header worksheet-head">
       <div>
         <p class="label">Kernzerfall & Halbwertzeit</p>
         <h1>Zerfall von Cubetonium</h1>
-        <p class="lead">Ein digitales Würfelexperiment wie auf dem Arbeitsblatt: Jeder Würfel steht für einen Atomkern, ein Treffer bedeutet Zerfall.</p>
+        <p class="lead">Würfelmodell: Jeder Würfel ist ein Kern, ein Treffer zerfällt. Alles ist als Ein-Screen-Arbeitsfläche angeordnet.</p>
       </div>
       <img src="Kern.png" alt="Symbolbild eines Atomkerns" class="header-image">
     </header>
 
-    <section class="card intro-card" aria-labelledby="auftrag-title">
-      <div>
-        <p class="label">Vorbereitung</p>
-        <h2 id="auftrag-title">Arbeitsauftrag</h2>
-        <ol class="checklist">
-          <li>Wähle die Anzahl der Cubetonium-Kerne und starte mit einem einzelnen Zeitschritt.</li>
-          <li>Notiere nach jedem Schritt die Zeit <strong>t</strong>, die Zerfälle <strong>ΔN</strong> und die Restmenge <strong>N</strong>.</li>
-          <li>Markiere den Zeitpunkt, an dem ungefähr die Hälfte der Anfangskerne übrig ist.</li>
-          <li>Vergleiche Messwerte, Diagramm und Modellrechnung miteinander.</li>
-        </ol>
-      </div>
-      <aside class="info-box" aria-label="Modellannahme">
-        <strong>Modell</strong>
-        <p>Bei p = 1/6 gilt näherungsweise: <br><span>N(t) = N₀ · (5/6)<sup>t</sup></span></p>
+    <div class="screen-grid">
+      <aside class="side-column">
+        <section class="card compact-card" aria-labelledby="setup-title">
+          <h2 id="setup-title">Simulation</h2>
+          <div class="controls compact-controls">
+            <label>Atomanzahl
+              <select name="N-Würfel" id="myRange">
+                <option value="50">50</option>
+                <option value="500">500</option>
+                <option value="10000">10 000</option>
+                <option value="25000">25 000</option>
+                <option value="50000">50 000</option>
+              </select>
+            </label>
+            <label>Zerfall
+              <select id="decaySides">
+                <option value="6">1/6 pro Schritt</option>
+                <option value="4">1/2 pro Schritt</option>
+                <option value="10">1/10 pro Schritt</option>
+              </select>
+            </label>
+            <div class="actions">
+              <button type="button" id="Start">Zeitschritt</button>
+              <button type="button" id="autoRun">Auto</button>
+              <button type="button" id="Restart" class="secondary">Reset</button>
+            </div>
+          </div>
+
+          <div class="stats" aria-label="Messwerte">
+            <p><span>Start</span><strong id="demo">50</strong></p>
+            <p><span>N</span><strong id="remainingCount">50</strong></p>
+            <p><span>t</span><strong><span id="roundCount">0</span> s</strong></p>
+            <p><span>T½</span><strong id="halfLifeDisplay">–</strong></p>
+          </div>
+
+          <div class="model-panel" aria-label="Modellrechnung">
+            <p><span>Formel</span><strong id="formulaCurrent">N(t)=50·(5/6)^t</strong></p>
+            <p><span>Erwartung</span><strong id="expectedRemaining">50</strong></p>
+            <p><span>T½ theor.</span><strong id="theoryHalfLife">3,8 s</strong></p>
+          </div>
+          <p class="hint"><kbd>W</kbd> = Zeitschritt</p>
+        </section>
+
+        <section class="card compact-card assignment-card" aria-labelledby="auftrag-title">
+          <h2 id="auftrag-title">Arbeitsauftrag</h2>
+          <ol class="checklist compact-list">
+            <li>Messreihe starten und t, ΔN, N beobachten.</li>
+            <li>Ersten Zeitpunkt mit N ≤ N₀/2 markieren.</li>
+            <li>Messung mit 50, 500 und 10 000 Kernen vergleichen.</li>
+            <li>Mit N(t)=N₀·(5/6)<sup>t</sup> für 4, 8, 12 s rechnen.</li>
+          </ol>
+        </section>
       </aside>
-    </section>
 
-    <section class="card" aria-labelledby="setup-title">
-      <h2 id="setup-title">Simulation</h2>
-      <div class="controls">
-        <label>
-          Atomanzahl
-          <select name="N-Würfel" id="myRange">
-            <option value="50">50</option>
-            <option value="500">500</option>
-            <option value="10000">10 000</option>
-            <option value="25000">25 000</option>
-            <option value="50000">50 000</option>
-          </select>
-        </label>
-        <label>
-          Zerfallswahrscheinlichkeit
-          <select id="decaySides">
-            <option value="6">1/6 pro Zeitschritt</option>
-            <option value="4">1/2 pro Zeitschritt</option>
-            <option value="10">1/10 pro Zeitschritt</option>
-          </select>
-        </label>
-        <div class="actions">
-          <button type="button" id="Start">Zeitschritt</button>
-          <button type="button" id="autoRun">Auto</button>
-          <button type="button" id="Restart" class="secondary">Reset</button>
+      <section class="card atoms-card" aria-labelledby="atoms-title">
+        <div class="section-title">
+          <h2 id="atoms-title">Atomkerne</h2>
+          <p id="counter">Verbleibende Cubetonium-Atome: 50</p>
         </div>
-      </div>
+        <div class="grid" id="grid" aria-live="polite"></div>
+      </section>
 
-      <div class="stats" aria-label="Messwerte">
-        <p><span>Start</span><strong id="demo">50</strong></p>
-        <p><span>Verbleibend</span><strong id="remainingCount">50</strong></p>
-        <p><span>Zeit</span><strong><span id="roundCount">0</span> s</strong></p>
-        <p><span>Halbwertszeit</span><strong id="halfLifeDisplay">–</strong></p>
-      </div>
-
-      <div class="model-panel" aria-label="Modellrechnung">
-        <p><span>Aktuelle Modellformel</span><strong id="formulaCurrent">N(t)=50·(5/6)^t</strong></p>
-        <p><span>Erwartungswert jetzt</span><strong id="expectedRemaining">50</strong></p>
-        <p><span>Theoretische Halbwertszeit</span><strong id="theoryHalfLife">3,8 s</strong></p>
-      </div>
-      <p class="hint">Tastatur: Mit <kbd>W</kbd> wird ein weiterer Zeitschritt ausgelöst. Der Auto-Lauf ist praktisch für lange Messreihen.</p>
-    </section>
-
-    <section class="card method-card" aria-labelledby="method-title">
-      <h2 id="method-title">Durchführung und Beobachtung</h2>
-      <div class="method-grid">
-        <div>
-          <h3>1. Messreihe aufnehmen</h3>
-          <p>Führe mindestens zehn Zeitschritte aus. Bei kleinen Startzahlen ist die Messreihe absichtlich unruhig.</p>
+      <section class="card chart-card" id="diagramm" aria-labelledby="chart-title">
+        <div class="section-title">
+          <h2 id="chart-title">Auswertung</h2>
+          <p>Blau: N(t), Rot: ΔN</p>
         </div>
-        <div>
-          <h3>2. Halbwertszeit ablesen</h3>
-          <p>Suche in Tabelle oder Diagramm den ersten Wert, bei dem N ≤ N₀/2 ist.</p>
+        <div id="DownloadContainer" class="chart-wrapper">
+          <svg id="v4" role="img" aria-label="Diagramm zum Kernzerfall"></svg>
         </div>
-        <div>
-          <h3>3. Deuten</h3>
-          <p>Erkläre den Unterschied zwischen Zufall beim einzelnen Kern und Vorhersagbarkeit bei vielen Kernen.</p>
+        <div class="table-wrap">
+          <table class="Messtabelle">
+            <tbody>
+              <tr id="wurf"><th>Zeit</th></tr>
+              <tr id="messwert"><th>ΔN</th></tr>
+              <tr id="restwert"><th>N</th></tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-    </section>
-
-    <section class="card" aria-labelledby="atoms-title">
-      <div class="section-title">
-        <h2 id="atoms-title">Atomkerne</h2>
-        <p id="counter">Verbleibende Cubetonium-Atome: 50</p>
-      </div>
-      <div class="grid" id="grid" aria-live="polite"></div>
-    </section>
-
-    <section class="card" id="diagramm" aria-labelledby="chart-title">
-      <div class="section-title">
-        <h2 id="chart-title">Auswertung</h2>
-        <p>Blau: N(t), Rot: Zerfälle pro Zeitschritt ΔN</p>
-      </div>
-      <div id="DownloadContainer" class="chart-wrapper">
-        <svg id="v4" role="img" aria-label="Diagramm zum Kernzerfall"></svg>
-      </div>
-      <div class="table-wrap">
-        <table class="Messtabelle">
-          <tbody>
-            <tr id="wurf"><th>Zeit</th></tr>
-            <tr id="messwert"><th>ΔN</th></tr>
-            <tr id="restwert"><th>N</th></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card tasks" id="aufgaben" aria-labelledby="tasks-title">
-      <h2 id="tasks-title">Auswertung und Aufgaben</h2>
-      <div class="task-grid">
-        <article>
-          <h3>A Messwerte</h3>
-          <ol>
-            <li>Starte mit 500 Kernen und bestimme aus Tabelle und Diagramm die Halbwertszeit.</li>
-            <li>Wiederhole die Messung mit 50 und 10 000 Kernen. Beschreibe die Unterschiede.</li>
-          </ol>
-        </article>
-        <article>
-          <h3>B Rechnung</h3>
-          <ol>
-            <li>Berechne mit N(t)=N₀·(5/6)<sup>t</sup>, wie viele von 10 000 Kernen nach 4, 8 und 12 s übrig sind.</li>
-            <li>Vergleiche deine berechneten Werte mit der Simulation. Notiere mögliche Abweichungen.</li>
-          </ol>
-        </article>
-        <article>
-          <h3>C Erklärung</h3>
-          <ol>
-            <li>Erkläre, warum ΔN mit der Zeit kleiner wird.</li>
-            <li>Formuliere eine kurze Definition der Halbwertszeit in eigenen Worten.</li>
-          </ol>
-        </article>
-      </div>
-    </section>
+      </section>
+    </div>
   </main>
 </body>
 </html>
